@@ -1,12 +1,12 @@
-use std::fs::File;
 use std::fs;
-use std::io::Read;
-use std::io::{Seek,SeekFrom};
+use std::fs::File;
 use std::io;
+use std::io::Read;
+use std::io::{Seek, SeekFrom};
 
-fn check_bom(file_name :&str) -> bool {
+fn check_bom(file_name: &str) -> bool {
     let mut f = File::open(file_name).unwrap();
-    let mut buf = vec![0;3];
+    let mut buf = vec![0; 3];
     f.read(&mut buf).unwrap();
     if (buf[0] == 0xef) && (buf[1] == 0xbb) && (buf[2] == 0xbf) {
         return true;
@@ -14,7 +14,7 @@ fn check_bom(file_name :&str) -> bool {
     false
 }
 
-fn remove_bom_impl(file_name :&str) -> bool {
+fn remove_bom_impl(file_name: &str) -> bool {
     let tmpname = file_name.to_owned() + ".tmp";
     {
         fs::rename(file_name, tmpname.as_str()).unwrap();
@@ -28,9 +28,9 @@ fn remove_bom_impl(file_name :&str) -> bool {
     true
 }
 
-pub fn remove_bom(file_name: &str) ->bool {
+pub fn remove_bom(file_name: &str) -> bool {
     match check_bom(file_name) {
         true => remove_bom_impl(file_name),
-        false => true
+        false => true,
     }
 }
